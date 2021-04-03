@@ -6,17 +6,17 @@ Date: 4-1-2021
 
 Andrew N.
 
-### TryHackMe Start
+### 1. TryHackMe Start
 - Installed Kali Linux VM to Desktop
 - Connected OpenVPN connection using *sudo openvpn --config tryhackmeusername.ovpn* 
 	
 	***NOTE: tryhackmeusername.opvn** downloaded from tryhackme.com*
 
 Date Updated: 4-3-2021 *fixed markdown and added images*
-###Task 2 Reconnaissance
+### 2. Task 2 Reconnaissance
 - run nmap -sV machines_ip (10.10.16.161 for me when I created the VM this will vary)
 
-**Open Ports**
+**1.1 Open Ports**
 	
 - Six open ports found.
 
@@ -27,7 +27,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 
 ![image info](./Images/t2_nmap_verboseoutput.png)
 
-**Answers to Questions**
+**1.2 Answers to Questions**
 
 - Squid http Proxy is running version 3.5.12
 - if you run nmap -n the DNS will not resolve.
@@ -35,7 +35,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 - ubuntu is the OS running (states when looking at Apache webserver beside port 3333 Apache httpd 2.4.18 (Ubuntu))
 
 
-### Task 3 Locating directories using GoBuster
+### 2. Task 3 Locating directories using GoBuster
 
 - Installed GObuster on the Kali VM using sudo apt install gobuster
 - Unzip rockyou.txt.gz using sudo gzip -d /usr/share/wordlists/rockyou.txt.gz this is a wordlist to use against in gobuster
@@ -48,7 +48,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 
 - Working Command:  gobuster dir -ulimit 8192 -u http://10.10.16.161:3333 -w /usr/share/wordlists/dirb/common.txt -t 10
 		
-	**Important Output**
+	**2.1 Important Output**
 		
 
 		/images (301)
@@ -60,7 +60,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 	- anywhere between 200 and 399 are successfull outputs meaning the page does exist and/or you can access it
 
 		 
-**Using Burp Suite's Upload Scanner Extension**
+**2.2 Using Burp Suite's Upload Scanner Extension**
 
 *This will allow us to check which file types are allowed in the /internal upload page*
 
@@ -70,13 +70,13 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 *[Installing Jython in Burp Suite](https://gracefulsecurity.com/burp-suite-extensions-installing-jython-and-adding-an-extension/)*,
 *[Using Upload Scanner](https://www.modzero.com/share/uploadscanner/UploadScanner_101_Basics.mp4)*
 
-	- Kali has Burp Suite pre-installed, however, it does not come with the Upload Scanner functionality by default.
-	- Need to download [Upload Scanner Extension] (https://portswigger.net/bappstore/b2244cbb6953442cb3c82fa0a0d908fa "Upload Scanner") and Extract the contents to a folder.
-		- To use Upload Scanner we need to download the [Jython **standalond** JRE] (https://www.jython.org/download "Jython Download Page") for use with Burp Suite.
-			**Installing Jython standalone JRE**
-				- navigate to the **Extender** tab, select  **Options**
-				- Under **Python Environment** Click **Select file...** and navigate to the jython standalone jar downloaded previously.
-		- To Install, navigate to the **Extender** tab, select **Extensions**, select **Add** and under **Extension Details** change **Java** to **Python** as the Extension Type and browse to the extracted **UploadScanner.py**, and select **Next**
+- Kali has Burp Suite pre-installed, however, it does not come with the Upload Scanner functionality by default.
+- Need to download [Upload Scanner Extension] (https://portswigger.net/bappstore/b2244cbb6953442cb3c82fa0a0d908fa "Upload Scanner") and Extract the contents to a folder.
+	- To use Upload Scanner we need to download the [Jython **standalond** JRE] (https://www.jython.org/download "Jython Download Page") for use with Burp Suite.
+		**Installing Jython standalone JRE**
+			- navigate to the **Extender** tab, select  **Options**
+			- Under **Python Environment** Click **Select file...** and navigate to the jython standalone jar downloaded previously.
+	- To Install, navigate to the **Extender** tab, select **Extensions**, select **Add** and under **Extension Details** change **Java** to **Python** as the Extension Type and browse to the extracted **UploadScanner.py**, and select **Next**
 
 - To use Burp Suite Open the GUI and navigate to the *Proxy* tab
 	- Select the **Intercept On** button in blue to turn it off
@@ -106,7 +106,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 
 
 
-**Answers to Questions**
+**2.3 Answers to Questions**
 
 - The /internal URL gives a page to Upload a file. 
 
