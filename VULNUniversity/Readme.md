@@ -48,7 +48,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 
 - Working Command:  gobuster dir -ulimit 8192 -u http://server_ip:3333 -w /usr/share/wordlists/dirb/common.txt -t 10
 		
-	**2.1 Important Output**
+	**Important Output**
 		
 
 		/images (301)
@@ -60,7 +60,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 	- anywhere between 200 and 399 are successfull outputs meaning the page does exist and/or you can access it
 
 		 
-**2.2 Using Burp Suite's Upload Scanner Extension**
+**2.1 Using Burp Suite's Upload Scanner Extension**
 
 *This will allow us to check which file types are allowed in the /internal upload page*
 
@@ -106,7 +106,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 
 
 
-**2.3 Answers to Questions**
+**2.2 Answers to Questions**
 
 - The /internal URL gives a page to Upload a file. 
 - .php extensions are not allowed to be uploaded.
