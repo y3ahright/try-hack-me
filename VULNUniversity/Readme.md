@@ -1,6 +1,6 @@
 # Try Hack Me VULNUniversity 
 ## Andrew Nichols
-## Date: 4-1-2021
+Date: 4-1-2021
 
 ### 1. TryHackMe Start
 - Installed Kali Linux VM to Desktop
