@@ -109,5 +109,5 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 **2.3 Answers to Questions**
 
 - The /internal URL gives a page to Upload a file. 
-
+- .php extensions are not allowed to be uploaded.
 
