@@ -14,7 +14,7 @@ Andrew N.
 
 Date Updated: 4-3-2021 *fixed markdown and added images*
 ### 2. Task 2 Reconnaissance
-- run nmap -sV machines_ip (10.10.16.161 for me when I created the VM this will vary)
+- run nmap -sV server_ip 
 
 **1.1 Open Ports**
 	
@@ -39,14 +39,14 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 
 - Installed GObuster on the Kali VM using sudo apt install gobuster
 - Unzip rockyou.txt.gz using sudo gzip -d /usr/share/wordlists/rockyou.txt.gz this is a wordlist to use against in gobuster
-- Run gobuster using 'dir' for directory '-u' for target URL <http://machine_ip:server_port> '-w' path_to_wordlist
-	- for me it is 'gobuster dir -u http://10.10.16.161:3333 -w /usr/share/wordlists/rockyou.txt'
+- Run gobuster using 'dir' for directory '-u' for target URL http://server_ip:server_port '-w' path_to_wordlist
+	- for me it is 'gobuster dir -u http://server_ip:3333 -w /usr/share/wordlists/rockyou.txt'
 		
 		*Note: Failed first time run, ran a ping command and the latency was around 130ms, reran command and worked*
 		*Note: Also rockyou is huge took forver and started running into "too many open files error had to change the cmd"*
 		*Note: -ulimit 8192 allowed for the fast and common wordlists to work /usr/share/dirb/common.txt and fast.txt*
 
-- Working Command:  gobuster dir -ulimit 8192 -u http://10.10.16.161:3333 -w /usr/share/wordlists/dirb/common.txt -t 10
+- Working Command:  gobuster dir -ulimit 8192 -u http://server_ip:3333 -w /usr/share/wordlists/dirb/common.txt -t 10
 		
 	**2.1 Important Output**
 		
@@ -71,8 +71,8 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 *[Using Upload Scanner](https://www.modzero.com/share/uploadscanner/UploadScanner_101_Basics.mp4)*
 
 - Kali has Burp Suite pre-installed, however, it does not come with the Upload Scanner functionality by default.
-- Need to download [Upload Scanner Extension] (https://portswigger.net/bappstore/b2244cbb6953442cb3c82fa0a0d908fa "Upload Scanner") and Extract the contents to a folder.
-	- To use Upload Scanner we need to download the [Jython **standalond** JRE] (https://www.jython.org/download "Jython Download Page") for use with Burp Suite.
+- Need to download [Upload Scanner Extension](https://portswigger.net/bappstore/b2244cbb6953442cb3c82fa0a0d908fa "Upload Scanner") and Extract the contents to a folder.
+	- To use Upload Scanner we need to download the [Jython **standalond** JRE](https://www.jython.org/download "Jython Download Page") for use with Burp Suite.
 		**Installing Jython standalone JRE**
 			- navigate to the **Extender** tab, select  **Options**
 			- Under **Python Environment** Click **Select file...** and navigate to the jython standalone jar downloaded previously.
@@ -81,7 +81,7 @@ Date Updated: 4-3-2021 *fixed markdown and added images*
 - To use Burp Suite Open the GUI and navigate to the *Proxy* tab
 	- Select the **Intercept On** button in blue to turn it off
 	- Click **Open Browser** button to open a Chromium browser with the proxy settings configured for Burp Suite to intercept traffic
-	- Navigate to the site with the upload form (in our case 10.10.16.161:3333/internal previously found using Gobuster and nmap)
+	- Navigate to the site with the upload form (in our case server_ip:3333/internal previously found using Gobuster and nmap)
 	- Select the **Intercept is off** button to turn incetercepting back on.
 	- Upload a test file (i just a txt file on the desktop) and select Submit.
 	- In Burp Suite click the **Forward** button until the upload is complete and **Extension not allowed** shows.
