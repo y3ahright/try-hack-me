@@ -1,4 +1,4 @@
-# Try Hack Me VULNUniversity 
+# Try Hack Me VULNUniversity
 ## Andrew Nichols
 
 
@@ -56,7 +56,7 @@
 **3.1 Answers to Questions**
 - The /internal URL gives a page to Upload a file. 
 
-**4 Compromise the webserver using Burp Suite's Upload Scanner Extension**
+### 4 Compromise the webserver using Burp Suite's Upload Scanner Extension
 
 *This will allow us to check which file types are allowed in the /internal upload page*
 
@@ -101,7 +101,65 @@
 ![image info](./Images/burp_success_response.png)
 	- Stop the scan by selecting the **1** tab and clicking **Stop scan**
 
-**4.3 Answers to Questions**
+**4.2 Burp Suite Intruder with wordlist**
+
+- Create a wordlist text file with .php, php3, php4, php5, and phtml files
+- Navigate to Proxy
+- Turn Intercept Off
+- Select Open Browser
+- Navigate to the site we want to attack
+- Turn Intercept back on
+- Upload a file (the same file as previous works fine)
+- In HTTPhistory, find the POST method where you uploaded your file, right click and **Send to Intruder**
+- In the **Intruder** tab click **Positions**
+- Add **§** before and after the uploaded file extension (there is a button to Add §)
+
+	![image info](./Images/burp_payload_position.png)
+
+- In the **Intruder** tab click **Payloads**
+- Click **Load** under **Payload Options** and select your wordlist created earlier
+
+	![image info](./Images/burp_wordlist_added.png)
+
+- Select **Start attack**
+- View the response and you see phtml has a successful upload
+
+**4.3 Reverse Shell via PHP**
+
+- Now that we can successfully upload phtml file types we can attempt to gain shell access via a reverse PHP shell
+- Using a reverse php shell template from :
+- Set the IP address to your internal IP (10.10.x.x)
+- Using netcat (nc) we can listen on a port for IP connections 
+	- using **nc -lvnp 1234** we can set netcat to (l)isten, (v)erbose, (n)o DNS only numeric IP addresses, on (p)ort 1234
+- Once netcat is listening, we can then upload our reverse php code to the server
+- Once uploaded we can then navigate to http://server_ip:3333/internal/uploads/name_of_reverse_shell_code.phtml
+- Going back to the terminal with netcat listening, we will see a remote shell connection.
+
+![image info](./Images/netcat_remote_shell.png)
+
+- Snooping around a bit we can see we are logged into the remote shell with the user www-data 
+	- This user is the default user for ubuntu web servers.
+- To get a list of all the users on the system run cat /etc/passwd and view the output
+	- We can easily see there is only one non-default user added to the system named *bill*
+	- In Bill's home directory there is a file named user.txt
+		- running cat /home/bill/user.txt we find 8bd7992fbe8a6ad22a63361004cfcedb which is Bill's flag.
+
+![image info](./Images/netcat_users.png)
+
+
+**4.4 Answers to Questions** 
 
 - .php extensions are not allowed to be uploaded.
+- .phtml extensions are allowed to be uploaded
+- bill is the user that manages the webserver
+- bill's flag is: 8bd7992fbe8a6ad22a63361004cfcedb
 
+### 5 Privilege Escalation
+
+- To find what files on the system have the ability to run as root we run the following command:
+	- find / -perm /4000
+	- Reading the output of the command we can scroll past any item in the /proc/ folder since we can not access it
+	- we dow however find /bin/systemctl which controls the service manager and is a system utility.
+		- systemctl can start, stop, restart, or enable/disable as well as check the status of a service. 
+
+	![image info](./Images/systemctl.png)
